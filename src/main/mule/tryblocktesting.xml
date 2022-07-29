@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="80f1de21-7eb9-4ca0-9dad-4c77b2e28fef" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="f1a3eda9-d5c2-47e4-ad40-e676d06ae144" >
+		<http:request-connection host="localhost" port="4562" />
+	</http:request-config>
+	<flow name="tryblocktestingFlow" doc:id="97a1eacc-2ede-4fb4-bc8a-4660dce18680" >
+		<http:listener doc:name="Listener" doc:id="7b19e02c-0515-438d-9a9d-a5725953c1af" config-ref="HTTP_Listener_config" path="/test"/>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="8c885525-4d9a-41ff-ac57-6c08ce97d97c" />
+		<try doc:name="Try" doc:id="db6ab0f9-a833-410b-b157-8987828ac85d" >
+			<set-payload value="#[pay]" doc:name="Set Payload" doc:id="2a51dca8-b28d-4cde-aa7c-f3716ced36a9" />
+			<set-payload value="#[payload]" doc:name="Set Payload" doc:id="c03d9ade-f7e5-40d7-b6c1-79b732ded239" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="89018cb1-3ae6-4ade-9c3b-e04fecb08169" >
+					<set-payload value="syntax error" doc:name="Set Payload" doc:id="ccdc2cfa-dab4-4d1a-a63c-26971e240153" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="634ee682-2fee-4cb9-b930-ffd65a28ef05" />
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="0e461c3c-1a2f-4d78-9a76-cd30056907bf" />
+		<http:request method="POST" doc:name="Request" doc:id="b2203637-8c36-4839-9d62-54d637f83e37" config-ref="HTTP_Request_configuration" path="/test"/>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="c5da1d55-d32e-49e6-b818-1aa8f0b78fba" />
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="4201fc0f-3bb2-4a3f-9a59-1e764f6bba7e" />
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="87a81aa2-24d1-4f32-9cb5-fcdd5cb8e634" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="00b25849-43cf-46dd-8a8e-657018653785" >
+				<set-payload value="#[error.detailedDescription]" doc:name="Set Payload" doc:id="81764dbd-c18c-4808-bac5-3f052f5d47a2" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="tryblocktestingFlow1" doc:id="6d4d71ab-9ad4-4ed3-9e21-7619130d6f88" />
+	<sub-flow name="tryblocktestingSub_Flow" doc:id="967eee9c-3662-4a87-8d0e-8bb3d5782d96" >
+		<try doc:name="Try" doc:id="7f99273c-e22d-48e4-ab20-9f51e3594ea1" >
+			<set-payload value="#[payload]" doc:name="Set Payload" doc:id="c94dda04-ed5d-4334-9ced-7a120339c78b" />
+			<set-payload value="#[payload]" doc:name="Set Payload" doc:id="742171d8-01e4-44f5-8fdb-cd1a9728c229" />
+			<set-variable value="" doc:name="Set Variable" doc:id="cb9002a8-4f0c-48d2-ac1b-b21dc2c3a358" />
+			<set-variable value="" doc:name="Set Variable" doc:id="b94c2fce-1899-4e94-b24f-2bd40d6e40d6" />
+		</try>
+	</sub-flow>
+</mule>
